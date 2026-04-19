@@ -2,11 +2,11 @@ import { Leaf, Heart, Sprout, Users, Award, Globe, ChevronRight } from "lucide-r
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 
-import background from '../../assets/background.jpg';
+import background from '../../assets/image/background.jpg';
 
 
 const STORY_PARAGRAPHS = [
-  "Founded in 2020, Verdant Haven began with a simple mission: to make plant ownership accessible, enjoyable, and sustainable for everyone. What started as a small local shop has grown into a thriving community of plant lovers.",
+  "Founded in 2020, Naldo's Garden began with a simple mission: to make plant ownership accessible, enjoyable, and sustainable for everyone. What started as a small local shop has grown into a thriving community of plant lovers.",
   "We carefully source our plants from trusted growers who share our commitment to quality and sustainability. Each plant is hand-selected and inspected to ensure it arrives at your door healthy, vibrant, and ready to thrive.",
   "Our team of plant experts is passionate about helping you succeed. Whether you're a seasoned green thumb or just starting your plant journey, we're here to guide you every step of the way.",
 ];
@@ -29,6 +29,7 @@ const VALUES = [
   { icon: <Heart size={20} />, label: "Quality", desc: "Only the healthiest, most beautiful plants" },
   { icon: <Users size={20} />, label: "Community", desc: "Building connections through shared love of nature" },
   { icon: <Award size={20} />, label: "Integrity", desc: "Honest, transparent relationships with our customers" },
+
 ];
 
 const SHOP_CATEGORIES = [
@@ -75,7 +76,7 @@ export default function About() {
 
       {/* HERO HEADER */}
       <section className="py-16 text-center px-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-green-600 mb-4">About Verdant Haven</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-green-600 mb-4">About Naldo's Garden</h1>
         <p className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed">
           Your trusted partner in bringing the beauty and benefits of nature into your home and workspace.
         </p>
@@ -161,7 +162,7 @@ export default function About() {
         <div className="bg-green-600 rounded-3xl px-10 py-14 text-center text-white">
           <h2 className="text-3xl font-bold mb-3">Join Our Growing Community</h2>
           <p className="text-white/80 text-sm mb-8 max-w-md mx-auto leading-relaxed">
-            Start your plant journey with Verdant Haven today and discover the joy of nurturing nature in your own space.
+            Start your plant journey with Naldo's Garden today and discover the joy of nurturing nature in your own space.
           </p>
           <Link
             to="/shop"
@@ -175,7 +176,7 @@ export default function About() {
 
       {/* FOOTER */}
       <footer className="border-t border-gray-100 py-8 text-center text-gray-400 text-xs">
-        © {new Date().getFullYear()} Verdant Haven. All rights reserved.
+        © {new Date().getFullYear()} Naldo's Garden. All rights reserved.
       </footer>
     </div>
   );

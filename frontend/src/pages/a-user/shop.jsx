@@ -1,18 +1,25 @@
-import { useState } from "react";
-import { Plus, Filter, Search, Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Filter, Search, Star, LogIn } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
+
+
+import kawa from '../../assets/image/kawa.jpg';
+import stonevase from '../../assets/image/stonevase.jpg';
+import ceramicpot from '../../assets/image/ceramicpot.jpg';
+import claypot from '../../assets/image/claypot.jpg';
+import mont from '../../assets/image/mont.jpg';
+import snake from '../../assets/image/snake.jpg';
+import peace from '../../assets/image/peace.jpg';
+
 
 const CATEGORIES = [
   { id: "all", label: "All Products" },
-  { id: "indoor", label: "Indoor Plants" },
-  { id: "outdoor", label: "Outdoor Plants" },
-  { id: "succulents", label: "Succulents" },
-  { id: "ferns", label: "Ferns" },
-  { id: "flowering", label: "Flowering Plants" },
-  { id: "tools", label: "Gardening Tools" },
-  { id: "accessories", label: "Accessories" },
-  { id: "pots", label: "Pots & Planters" },
-  { id: "fertilizers", label: "Fertilizers" },
+  { id: "Plants", label: "Plants" },
+  { id: "Paso", label: "Paso" },
+  { id: "Kawa", label: "Kawa" },
+  { id: "Base", label: "Base" },
+
 ];
 
 const TYPE_STYLES = {
@@ -30,34 +37,83 @@ const BADGE_STYLES = {
 };
 
 const PRODUCTS = [
-  { id: 1,  name: "Monstera Deliciosa",          category: "indoor",       type: "Plant",      price: 45.99, originalPrice: null,  rating: 4.8, reviews: 124, img: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400&q=80",  badge: null },
-  { id: 2,  name: "Snake Plant",                  category: "indoor",       type: "Plant",      price: 29.99, originalPrice: null,  rating: 4.9, reviews: 98,  img: "https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?w=400&q=80",  badge: null },
-  { id: 3,  name: "Succulent Mix",                category: "succulents",   type: "Plant",      price: 19.99, originalPrice: 24.99, rating: 4.7, reviews: 210, img: "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=400&q=80",  badge: "Sale" },
-  { id: 4,  name: "Fiddle Leaf Fig",              category: "indoor",       type: "Plant",      price: 65.99, originalPrice: null,  rating: 4.6, reviews: 76,  img: "https://images.unsplash.com/photo-1583754946432-e0c2e2697b41?w=400&q=80",  badge: null },
-  { id: 5,  name: "Golden Pothos",                category: "indoor",       type: "Plant",      price: 24.99, originalPrice: null,  rating: 4.9, reviews: 305, img: "https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?w=400&q=80",  badge: "Bestseller" },
-  { id: 6,  name: "Desert Cactus",                category: "succulents",   type: "Plant",      price: 14.99, originalPrice: null,  rating: 4.5, reviews: 88,  img: "https://images.unsplash.com/photo-1491895200222-0fc4a4c35e18?w=400&q=80",  badge: null },
-  { id: 7,  name: "Peace Lily",                   category: "flowering",    type: "Plant",      price: 39.99, originalPrice: null,  rating: 4.8, reviews: 142, img: "https://images.unsplash.com/photo-1596438459194-f275f413d6ff?w=400&q=80",  badge: null },
-  { id: 8,  name: "Rubber Plant",                 category: "indoor",       type: "Plant",      price: 42.99, originalPrice: null,  rating: 4.7, reviews: 93,  img: "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?w=400&q=80",  badge: null },
-  { id: 9,  name: "Aloe Vera",                    category: "succulents",   type: "Plant",      price: 18.99, originalPrice: null,  rating: 4.9, reviews: 412, img: "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?w=400&q=80",  badge: "Bestseller" },
-  { id: 10, name: "Boston Fern",                  category: "ferns",        type: "Plant",      price: 32.99, originalPrice: null,  rating: 4.6, reviews: 67,  img: "https://images.unsplash.com/photo-1597305877032-0668b3c6413a?w=400&q=80",  badge: null },
-  { id: 11, name: "ZZ Plant",                     category: "indoor",       type: "Plant",      price: 38.99, originalPrice: null,  rating: 4.8, reviews: 115, img: "https://images.unsplash.com/photo-1632820566313-6bab68a07a8b?w=400&q=80",  badge: null },
-  { id: 12, name: "Lavender",                     category: "outdoor",      type: "Plant",      price: 22.99, originalPrice: null,  rating: 4.7, reviews: 189, img: "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=400&q=80",  badge: null },
-  { id: 13, name: "Premium Pruning Shears",        category: "tools",        type: "Tool",       price: 24.99, originalPrice: null,  rating: 4.8, reviews: 234, img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80",  badge: null },
-  { id: 14, name: "Gardening Hand Trowel Set",     category: "tools",        type: "Tool",       price: 18.99, originalPrice: null,  rating: 4.7, reviews: 156, img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&q=80",  badge: null },
-  { id: 15, name: "Heavy Duty Garden Rake",        category: "tools",        type: "Tool",       price: 32.99, originalPrice: null,  rating: 4.6, reviews: 89,  img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80",  badge: null },
-  { id: 16, name: "Watering Can – 2 Gallon",       category: "accessories",  type: "Accessory",  price: 21.99, originalPrice: null,  rating: 4.9, reviews: 302, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",  badge: null },
-  { id: 17, name: "Garden Kneeling Pad",           category: "accessories",  type: "Accessory",  price: 15.99, originalPrice: null,  rating: 4.5, reviews: 77,  img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80",  badge: null },
-  { id: 18, name: "Gardening Gloves – Professional", category: "accessories", type: "Accessory", price: 12.99, originalPrice: null,  rating: 4.8, reviews: 445, img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80",  badge: "Bestseller" },
-  { id: 19, name: "Moisture Meter 3-in-1",         category: "tools",        type: "Tool",       price: 16.99, originalPrice: null,  rating: 4.7, reviews: 198, img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&q=80",  badge: null },
-  { id: 20, name: "Plant Misters – Set of 2",      category: "accessories",  type: "Accessory",  price: 14.99, originalPrice: null,  rating: 4.6, reviews: 123, img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",  badge: null },
-  { id: 21, name: "Ceramic Pot – Modern",          category: "pots",         type: "Pot",        price: 28.99, originalPrice: null,  rating: 4.8, reviews: 167, img: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&q=80",  badge: null },
-  { id: 22, name: "Terracotta Pot Set – 3 Sizes",  category: "pots",         type: "Pot",        price: 22.99, originalPrice: null,  rating: 4.9, reviews: 289, img: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&q=80",  badge: "Bestseller" },
-  { id: 23, name: "Hanging Planter – Macramé",     category: "pots",         type: "Pot",        price: 19.99, originalPrice: null,  rating: 4.7, reviews: 201, img: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&q=80",  badge: null },
-  { id: 24, name: "Self-Watering Planter",         category: "pots",         type: "Pot",        price: 34.99, originalPrice: null,  rating: 4.8, reviews: 134, img: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&q=80",  badge: "New" },
-  { id: 25, name: "Woven Basket Planter – Natural", category: "pots",        type: "Pot",        price: 24.99, originalPrice: null,  rating: 4.6, reviews: 88,  img: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&q=80",  badge: null },
-  { id: 26, name: "Organic Fertilizer – All Purpose", category: "fertilizers", type: "Fertilizer", price: 16.99, originalPrice: null, rating: 4.8, reviews: 312, img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80", badge: null },
-  { id: 27, name: "Liquid Plant Food – Indoor",    category: "fertilizers",  type: "Fertilizer", price: 13.99, originalPrice: null,  rating: 4.7, reviews: 178, img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80",  badge: null },
-  { id: 28, name: "Succulent & Cactus Fertilizer", category: "fertilizers", type: "Fertilizer", price: 11.99, originalPrice: null,  rating: 4.6, reviews: 94,  img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80",  badge: null },
+  {
+    id: 1,
+    img: mont,
+    name: "Monstera",
+    price: 450,
+    stock: 15,
+    visible: true,
+    category: "Plants",
+    rating: 4.8,
+    badge: null,
+  },
+  {
+    id: 2,
+    img: snake,
+    name: "Snake Plant",
+    price: 220,
+    stock: 5,
+    visible: true,
+    category: "Plants",
+    rating: 4.9,
+    badge: null,
+  },
+  {
+    id: 3,
+    img: peace,
+    name: "Peace Lily",
+    price: 280,
+    stock: 12,
+    visible: true,
+    category: "Plants",
+    rating: 4.8,
+    badge: null,
+  },
+  {
+    id: 4,
+    img: claypot,
+    name: "Clay Pot",
+    price: 150,
+    stock: 20,
+    visible: true,
+    category: "Paso",
+    rating: 4.9,
+    badge: "Bestseller",
+  },
+  {
+    id: 5,
+    img: ceramicpot,
+    name: "Ceramic Pot",
+    price: 300,
+    stock: 8,
+    visible: true,
+    category: "Paso",
+    rating: 4.8,
+    badge: null,
+  },
+  {
+    id: 6,
+    img: kawa,
+    name: "Big Kawa",
+    price: 1200,
+    stock: 3,
+    visible: true,
+    category: "Kawa",
+    rating: 4.7,
+    badge: null,
+  },
+  {
+    id: 7,
+    img: stonevase,
+    name: "Stone Base",
+    price: 500,
+    stock: 6,
+    visible: true,
+    category: "Base",
+    rating: 4.6,
+    badge: null,
+  },
 ];
 
 export default function Shop() {
@@ -65,6 +121,16 @@ export default function Shop() {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
   const [addedId, setAddedId] = useState(null);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const navigate = useNavigate();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem("role")));
+
+  useEffect(() => {
+    const sync = () => setIsLoggedIn(Boolean(localStorage.getItem("role")));
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, []);
 
   const filtered = PRODUCTS.filter((p) => {
     const matchCat = activeCategory === "all" || p.category === activeCategory;
@@ -73,6 +139,10 @@ export default function Shop() {
   });
 
   const handleAdd = (id) => {
+    if (!isLoggedIn) {
+      setShowLoginPrompt(true);
+      return;
+    }
     setCart((prev) => [...prev, id]);
     setAddedId(id);
     setTimeout(() => setAddedId(null), 1000);
@@ -82,16 +152,51 @@ export default function Shop() {
     <div className="min-h-screen bg-gray-50 font-sans">
       <Header cartCount={cart.length} />
 
+      {/*  LOGIN PROMPT MODAL */}
+      {showLoginPrompt && (
+        <div
+          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4"
+          onClick={() => setShowLoginPrompt(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <LogIn size={24} className="text-green-600" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-800 mb-2">Login to Continue</h3>
+            <p className="text-gray-500 text-sm mb-6">
+              You need an account to add items to your cart and make purchases. Browsing is always free!
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowLoginPrompt(false)}
+                className="flex-1 border border-gray-200 text-gray-600 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 transition"
+              >
+                Keep Browsing
+              </button>
+              <button
+                onClick={() => navigate("/login")}
+                className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-xl text-sm font-semibold transition"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* PAGE HEADER */}
       <section className="py-12 text-center px-6 bg-white">
-        <h1 className="text-4xl font-bold text-green-600 mb-3">Our Collection</h1>
+        <h1 className="text-6xl font-bold text-green-600 mb-3">Our Collection</h1>
         <p className="text-gray-400 max-w-md mx-auto text-sm leading-relaxed">
           Discover our carefully curated selection of plants, tools, and accessories perfect for your gardening needs.
         </p>
       </section>
 
       {/* PRODUCT TYPE LEGEND */}
-      <div className="max-w-6xl mx-auto px-6 pt-4 pb-2 flex flex-wrap gap-2 items-center">
+      <div className="max-w-full justify-center mx-auto px-6 pt-4 pb-2 flex flex-wrap gap-2 items-center">
         <span className="text-xs text-gray-400 font-medium mr-1">Product types:</span>
         {Object.entries(TYPE_STYLES).map(([type, cls]) => (
           <span key={type} className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cls}`}>
@@ -100,9 +205,10 @@ export default function Shop() {
         ))}
       </div>
 
-      {/* FILTER BAR */}
-      <div className="max-w-6xl mx-auto px-6 pt-3 pb-5">
-        <div className="flex items-center gap-3 mb-4">
+      <div className="flex max-w-7xl mx-auto px-6 pt-3 pb-5">
+
+        {/* FILTER BAR */}
+        <div className="flex-1 flex items-center gap-3">
           <div className="relative flex-1 max-w-xs">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -117,28 +223,26 @@ export default function Shop() {
             <Filter size={13} /> Filter by Category
           </span>
         </div>
-
+        {/* CATEGORY */}
         <div className="flex flex-wrap gap-2">
           {CATEGORIES.map(({ id, label }) => (
             <button
               key={id}
               onClick={() => setActiveCategory(id)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${
-                activeCategory === id
-                  ? "bg-green-500 text-white border-green-500 shadow-sm"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-600"
-              }`}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${activeCategory === id
+                ? "bg-green-500 text-white border-green-500 shadow-sm"
+                : "bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-600"
+                }`}
             >
               {label}
             </button>
           ))}
         </div>
-
-        <p className="text-xs text-gray-400 mt-4">Showing {filtered.length} products</p>
       </div>
 
       {/* PRODUCT GRID */}
-      <div className="max-w-6xl mx-auto px-6 pb-20">
+      <div className="max-w-7xl mx-auto px-6 pb-20">
+        <p className="text-xs text-gray-400 mb-4">Showing {filtered.length} products</p>
         {filtered.length === 0 ? (
           <div className="text-center py-20 text-gray-400 text-sm">No products found.</div>
         ) : (
@@ -181,11 +285,10 @@ export default function Shop() {
                     </div>
                     <button
                       onClick={() => handleAdd(product.id)}
-                      className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                        addedId === product.id
-                          ? "bg-green-100 text-green-600"
-                          : "bg-green-500 hover:bg-green-600 text-white"
-                      }`}
+                      className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${addedId === product.id
+                        ? "bg-green-100 text-green-600"
+                        : "bg-green-500 hover:bg-green-600 text-white"
+                        }`}
                     >
                       <Plus size={11} />
                       {addedId === product.id ? "Added!" : "Add"}
@@ -198,9 +301,8 @@ export default function Shop() {
         )}
       </div>
 
-      {/* FOOTER */}
       <footer className="border-t border-gray-100 bg-white py-8 text-center text-gray-400 text-xs">
-        © {new Date().getFullYear()} Verdant Haven. All rights reserved.
+        © {new Date().getFullYear()} Naldo's Garden. All rights reserved.
       </footer>
     </div>
   );

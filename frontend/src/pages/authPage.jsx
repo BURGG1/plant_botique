@@ -1,23 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-    Leaf,
-    Mail,
-    Lock,
-    User,
-    Recycle,
-    Trash2,
-    Eye,
-    EyeOff
-
-} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Leaf, Mail, Lock } from "lucide-react";
+import background from "../assets/image/background.jpg";
 
 export default function AuthPage() {
     const [form, setForm] = useState({ email: "", password: "" });
     const navigate = useNavigate();
-    const [access, setAccess] = useState();
 
-    // temporary login
     const handleLogin = () => {
         if (form.email === "user" && form.password === "user") {
             localStorage.setItem("role", "user");
@@ -27,88 +16,105 @@ export default function AuthPage() {
             navigate("/dashboard");
         }
     };
+
     const handleChange = (e) =>
         setForm({ ...form, [e.target.name]: e.target.value });
 
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") handleLogin();
+    };
+
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 px-4">
-            <div className="w-full max-w-md text-center space-y-6">
+        <section className="h-screen relative flex items-center justify-center">
+
+            {/* BACKGROUND */}
+            <img
+                src={background}
+                className="absolute inset-0 w-full h-full object-cover"
+                alt="background"
+            />
+
+            <div className="absolute inset-0 bg-black/40" />
+
+            {/* GLASS CARD */}
+            <div className="relative backdrop-blur-md bg-white/20 border border-white/30 rounded-2xl p-10 w-full max-w-md shadow-lg text-center">
 
                 {/* LOGO */}
-                <div className="flex flex-col items-center gap-2">
-                    <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center">
-                        <Leaf className="text-white" size={32} />
-                    </div>
-                    <h1 className="text-xl font-semibold">
-                        Plant Botique
+                <div className="flex flex-col items-center mb-6">
+                    <Leaf className="text-white mb-2" size={32} />
+                    <h1 className="text-2xl font-bold text-white">
+                        Naldo's Garden
                     </h1>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-white/70 text-sm">
                         Bringing Nature Closer to You
                     </p>
                 </div>
 
-                {/* CARD */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 space-y-6">
+                {/* FORM */}
+                <div className="space-y-4 text-left">
 
-                    <h2 className="text-lg font-medium">Welcome Back!</h2>
-
-                    {/* Email */}
-                    <div className="space-y-1">
-                        <label className="block text-start text-bold text-sm mb-1">Email</label>
-                        <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-gray-50">
-                            <span>
-                                <Mail size={18} />
-                            </span>
+                    {/* EMAIL */}
+                    <div>
+                        <label className="text-white text-sm">Email</label>
+                        <div className="flex items-center gap-2 bg-white/30 rounded-lg px-3 py-2 mt-1">
+                            <Mail size={16} className="text-white" />
                             <input
                                 type="email"
                                 name="email"
                                 value={form.email}
                                 onChange={handleChange}
                                 placeholder="Enter your email"
-                                className="w-full bg-transparent outline-none pl-4"
-                                required
+                                className="w-full bg-transparent outline-none text-white placeholder-white/70"
                             />
-
                         </div>
                     </div>
 
-                    {/* Password */}
-                    <div className="relative">
-                        <label className="block text-sm text-start mb-1">Password</label>
-                        <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-gray-50">
-                            <span>
-                                <Lock size={18} />
-                            </span>
+                    {/* PASSWORD */}
+                    <div>
+                        <label className="text-white text-sm">Password</label>
+                        <div className="flex items-center gap-2 bg-white/30 rounded-lg px-3 py-2 mt-1">
+                            <Lock size={16} className="text-white" />
                             <input
                                 type="password"
                                 name="password"
                                 value={form.password}
                                 onChange={handleChange}
                                 placeholder="Enter your password"
-                                className="w-full bg-transparent outline-none pl-4"
-                                required
+                                className="w-full bg-transparent outline-none text-white placeholder-white/70"
                             />
                         </div>
-
                     </div>
 
+                    {/* BUTTON */}
                     <button
                         onClick={handleLogin}
-                        type="button"
-                        className="w-full cursor-pointer bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition"
+                        className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition mt-4"
                     >
                         Login
                     </button>
 
-                    <p className="text-sm text-gray-500">
+                    {/* FORGOT */}
+                    <p className="text-sm text-white/70 text-center mt-2">
                         Forgot your password?{" "}
-                        <span className="text-green-600 font-medium cursor-pointer">
+                        <span className="text-green-300 cursor-pointer">
                             Reset here
                         </span>
                     </p>
 
+                    <Link
+                        to="/"
+                    >
+                        <p className="text-sm text-green-500 text-center mt-2">
+                            Back to Home page?{" "}
+
+                        </p>
+                    </Link>
+
+
+
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
