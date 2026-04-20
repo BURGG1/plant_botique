@@ -11,6 +11,7 @@ const AdminHeader = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("role");
+        localStorage.removeItem("cart");
         navigate("/login");
     }
 

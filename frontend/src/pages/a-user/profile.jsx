@@ -22,15 +22,16 @@ export default function Profile() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("role");   
-    navigate("/login");               
+    localStorage.removeItem("role");
+    localStorage.removeItem("cart");
+    navigate("/login");
   };
 
   const MENU_ITEMS = [
-    { icon: <ShoppingBag size={18} />, label: "My Orders",   desc: `${user.orders} orders placed`,  action: () => {} },
-    { icon: <Heart size={18} />,       label: "Wishlist",    desc: `${user.wishlist} saved items`,  action: () => {} },
-    { icon: <Settings size={18} />,    label: "Settings",    desc: "Account preferences",           action: () => {} },
-  
+    { icon: <ShoppingBag size={18} />, label: "My Orders", desc: `${user.orders} orders placed`, action: () => { } },
+    { icon: <Heart size={18} />, label: "Wishlist", desc: `${user.wishlist} saved items`, action: () => { } },
+    { icon: <Settings size={18} />, label: "Settings", desc: "Account preferences", action: () => { } },
+
   ];
 
   return (
@@ -55,11 +56,10 @@ export default function Profile() {
             <div className="flex items-start justify-between">
               <div>
                 <h1 className="text-xl font-bold text-gray-800">{user.name}</h1>
-                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full mt-1 inline-block ${
-                  user.role === "admin"
+                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full mt-1 inline-block ${user.role === "admin"
                     ? "bg-amber-100 text-amber-700"
                     : "bg-green-100 text-green-700"
-                }`}>
+                  }`}>
                   {user.role === "admin" ? "Admin" : "Member"}
                 </span>
               </div>
@@ -98,9 +98,8 @@ export default function Profile() {
             <button
               key={label}
               onClick={action}
-              className={`w-full flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition text-left ${
-                i !== MENU_ITEMS.length - 1 ? "border-b border-gray-100" : ""
-              }`}
+              className={`w-full flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition text-left ${i !== MENU_ITEMS.length - 1 ? "border-b border-gray-100" : ""
+                }`}
             >
               <div className="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0">
                 {icon}

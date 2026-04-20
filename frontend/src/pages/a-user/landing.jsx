@@ -90,7 +90,7 @@ export default function LandingPage() {
                         </nav>
 
                         {/* Login */}
-                        <div className={`rounded-full p-2 transition-colors duration-300 ${scrolled ? "bg-green-50" : "bg-white"}`}>
+                        <div className={`rounded-full transition-colors duration-300 ${scrolled ? "bg-green-50" : "bg-white"}`}>
                             <button
                                 onClick={handleUserClick}
                                 title={isLoggedIn ? "My Profile" : "Login"}
